@@ -6,7 +6,7 @@
 /*   By: aleradzi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 12:59:51 by aleradzi          #+#    #+#             */
-/*   Updated: 2019/09/27 18:05:06 by aleradzi         ###   ########.fr       */
+/*   Updated: 2019/09/28 16:02:19 by aleradzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void	print(char **array)
+void	print(char **array)					/* this function prints the array with lines
+											   dividing the different boxes */
 {
 	int y;
 	int x;
@@ -29,10 +30,7 @@ void	print(char **array)
 		if (y == 3 || y == 6)
 		{
 			while (++hori < 13)
-			{
-				write(1, "-", 1);
-				write(1, " ", 1);
-			}
+				write(1, "- ", 2);
 			write(1, "\n", 1);
 		}
 		while (++x < 9)
@@ -40,18 +38,17 @@ void	print(char **array)
 			write(1, &array[y][x], 1);
 			write(1, " ", 1);
 			if (x == 2 || x == 5)
-			{
 				write(1, " |  ", 4);
-			}
 		}
 		write(1, "\n", 1);
 		x = -1;
 		hori = -1;
 	}
-	printf("\n");
+	write(1, "\n", 1);
 }
 
-int		checkBox(char **array, int x, int y, int n)
+int		checkBox(char **array, int x, int y, int n)		/* checkBox checks if number 'n' is anywhere
+														   in the current box or not */
 {
 	int		xnew;
 	int		ynew;
@@ -78,7 +75,9 @@ int		checkBox(char **array, int x, int y, int n)
 	return (1);
 }
 
-int		isntDot(char **array, int x, int y)
+int		isntDot(char **array, int x, int y)					/* isntDot returns a 1 for true if the current
+															   position is not a dot and a 0 for false if 
+															   it is */
 {
 	if (array[y][x] != '.')
 		return (1);
@@ -86,7 +85,8 @@ int		isntDot(char **array, int x, int y)
 }
 
 
-int		checkXY(char **array, int x, int y, int n)
+int		checkXY(char **array, int x, int y, int n)			/* checkXY checks if number 'n' is anywhere on
+															   the x or y axis */
 {
 	int		xnew;
 	int		ynew;
@@ -109,7 +109,8 @@ int		checkXY(char **array, int x, int y, int n)
 	return (1);
 }
 
-int		recursive(char **array, int x, int y)
+int		recursive(char **array, int x, int y)				/* this is the function that uses recursion making
+															   this whole thing work */
 {
 	int		n;
 
@@ -139,7 +140,8 @@ int		recursive(char **array, int x, int y)
 	return (0);	
 }
 
-char	**xferArray(char *buff)
+char	**xferArray(char *buff)					/* xferArray turns the test file from zzzz\nzzzz\n
+												   to an array with x and y coordinates */
 {
 	char	**array;
 	int		y;
@@ -166,10 +168,9 @@ char	**xferArray(char *buff)
 	return (array);
 }
 
-char	**readfile(int fd)
+char	**readfile(int fd)					/* readfile */
 {
 	char buffer[163];
-
 
 	read(fd, buffer, 162);
 	buffer[162] = '\0';
@@ -187,9 +188,6 @@ int		main(int ac, char **av)
 		array = readfile(fd);
 		printf("\n PUZZLE: \n\n");
 		print(array);
-//		printf("XY  - %d\n", checkXY(array, 2, 0, 6));
-//		printf("Box - %d\n", checkBox(array, 2, 0, 1));
-//		printf("Dot - %d\n", isntDot(array, 2, 2));
 		recursive(array, 0, 0);
 		printf("\n RESULT: \n\n");
 		print(array);
